@@ -5,7 +5,7 @@ const { getFavorites } = require('../firebase/firebase');
 
 router.get('/', function (req, res) {
     const API_URL = "https://api.github.com/search/repositories";
-    const token = "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";
+    const token = "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";
 
     const headers = new fetch.Headers();
     headers.append("Accept", "application/vnd.github+json");
@@ -25,12 +25,13 @@ router.get('/', function (req, res) {
         .then(response => response.json())
         .then(repositories => {
             getFavorites().then((favorites) => {
-                repositories.items.forEach(item => {
-                    if (favorites.repoIds.find(el => el === item.id))
-                        item.isFavorite = true;
-                });
-
-                res.status(200).json({ repositories, favorites });
+                if (favorites?.repoIds && repositories?.items) {
+                    repositories.items.forEach(item => {
+                        if (favorites.repoIds.find(el => el === item.id))
+                            item.isFavorite = true;
+                    });
+                }
+                res.status(200).json({ repositories: repositories?.items ?? [], favorites: favorites?.items ?? [] });
             }).catch(error => res.status(500).send(error));
         })
         .catch(error => res.status(500).send(error));
