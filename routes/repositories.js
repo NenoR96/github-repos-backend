@@ -5,7 +5,7 @@ const { getFavorites } = require('../firebase/firebase');
 
 router.get('/', function (req, res) {
     const API_URL = "https://api.github.com/search/repositories";
-    const token = "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";
+    const token = "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";
 
     const headers = new fetch.Headers();
     headers.append("Accept", "application/vnd.github+json");
